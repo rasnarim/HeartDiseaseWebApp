@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 400px;
+        }
+        form label {
+            display: block;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        form input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+        ul {
+            margin-top: 15px;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        ul strong {
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Heart Disease Predictor</h1>
+    <form method="POST">
+        <label for="ST_depresssion_exercise">ST Depression Exercise (0.0 to 10.0):</label>
+        <input type="number" step="0.1" name="ST_depresssion_exercise" id="ST_depresssion_exercise" min="0.0" max="10.0" value="0.4" required>
+
+        <label for="max_HR">Maximum Heart Rate (40 to 300):</label>
+        <input type="number" step="1" name="max_HR" id="max_HR" min="40" max="300" value="150.0" required>
+
+        <label for="number_vessels_involved">Number of Vessels Involved (0.0 to 4.0):</label>
+        <input type="number" step="1" name="number_vessels_involved" id="number_vessels_involved" min="0" max="4" value="1.0" required>
+
+        <label for="age_yr">Age (0 to 120):</label>
+        <input type="number" step="1" name="age_yr" id="age_yr" min="0" max="120" value="57" required>
+
+        <label for="resting_BP_mm_Hg">Resting Blood Pressure (50 to 250 mmHg):</label>
+        <input type="number" step="1" name="resting_BP_mm_Hg" id="resting_BP_mm_Hg" min="50" max="250" value="128" required>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <h2>Explanations of Parameters</h2>
+    <ul>
+        <li><strong>ST Depression Exercise:</strong> Measures the depression in the ST segment of an electrocardiogram (ECG) during exercise. The ST segment represents the interval between the depolarization and repolarization of heart ventricles. Abnormalities in this segment can indicate issues such as ischemia or reduced blood flow to the heart. <br>
+        <em>Example:</em> A value of 0.4 suggests mild stress, while values over 2.0 may indicate significant abnormality.</li>
+
+        <li><strong>Maximum Heart Rate:</strong> The highest heart rate achieved during exercise, measured in beats per minute (bpm). It reflects cardiovascular fitness and response to physical exertion. <br>
+        <em>Example:</em> A value of 150 bpm is common during moderate exercise, while a very low maximum HR could indicate underlying issues.</li>
+
+        <li><strong>Number of Vessels Involved:</strong> Indicates how many major blood vessels are narrowed or blocked, based on diagnostic tests (e.g., angiograms). <br>
+        <em>Example:</em> A value of 0.0 suggests no blockage, while 3.0 indicates significant arterial involvement.</li>
+
+        <li><strong>Age:</strong> The patient’s age in years, which is a key factor in assessing heart disease risk. Older age generally increases risk. <br>
+        <em>Example:</em> A 57-year-old patient is at moderate risk, while younger individuals may have lower risk unless other factors are present.</li>
+
+        <li><strong>Resting Blood Pressure:</strong> The blood pressure measured when the patient is at rest, expressed in millimeters of mercury (mmHg). High values indicate hypertension, which increases cardiovascular risk. <br>
+        <em>Example:</em> A value of 128 mmHg is slightly elevated but still considered near-normal, while values above 140 mmHg suggest hypertension.</li>
+    </ul>
+
+<div style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9;">
+    <strong>Disclaimer:</strong>
+    <p>
+        This app is intended for informational and educational purposes only and should not be considered medical advice, diagnosis, or treatment.
+        The results provided by this app are based on a machine learning model and should not be used as a substitute for professional medical consultation, diagnosis, or treatment.
+    </p>
+    <p>
+        Always consult a qualified healthcare professional regarding any medical concerns or conditions. The developers of this app are not responsible for any decisions or actions taken based on the information provided by this app. Use this app at your own risk.
+    </p>
+    <p>
+        By using this app, you agree that the developers and creators are not liable for any outcomes resulting from the use of this app.
+    </p>
+</div>
+
+<div style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9;">
+    <strong>Data Source:</strong>
+    <p>
+        The predictions and analyses provided by this app are based on a machine learning model trained on the
+        <a href="https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset" target="_blank">
+        Kaggle Heart Disease Dataset</a>.
+    </p>
+    <p>
+        This dataset contains detailed information on various medical indicators relevant to heart disease, including
+        age, resting blood pressure, cholesterol levels, and exercise-induced factors. It has been widely used in
+        academic and research contexts to study heart disease risk factors.
+    </p>
+    <p>
+        Please note that while the dataset provides valuable insights, the predictions generated by this app are based
+        on statistical and machine learning methods and may not reflect actual medical diagnoses.
+    </p>
+</div>
+
+
+</body>
+</html>

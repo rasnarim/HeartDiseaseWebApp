@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    <p><strong>Prediction:</strong> {{ 'Heart Disease' if prediction == 1 else 'No Heart Disease' }}</p>
+    <p><strong>Probability:</strong> {{ prediction_proba | round(2) }}</p>
+    <h2>SHAP Explanation</h2>
+    <img src="{{ shap_plot_url }}" alt="SHAP Force Plot">
+
+    <h2>Generated Report</h2>
+    <div>{{ report|safe }}</div>
+    <a href="/">Go Back</a>
+</body>
+</html>
