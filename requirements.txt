@@ -4,16 +4,16 @@ aiosignal==1.3.1
 annotated-types==0.7.0
 anyio==4.6.2.post1
 attrs==24.2.0
-blinker @ file:///home/conda/feedstock_root/build_artifacts/blinker_1715091184126/work
+blinker==1.9.0
 certifi==2024.8.30
 charset-normalizer==3.4.0
-click @ file:///D:/bld/click_1692312014553/work
+click==8.1.7
 cloudpickle==3.1.0
-colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1666700638685/work
+colorama==0.4.6
 contourpy==1.3.1
 cycler==0.12.1
 distro==1.9.0
-Flask @ file:///home/conda/feedstock_root/build_artifacts/flask_1712667726126/work
+Flask==3.1.0
 Flask-WTF==1.2.1
 fonttools==4.55.0
 frozenlist==1.5.0
@@ -21,14 +21,14 @@ h11==0.14.0
 httpcore==1.0.7
 httpx==0.27.2
 idna==3.10
-importlib_metadata @ file:///home/conda/feedstock_root/build_artifacts/importlib-metadata_1724187233579/work
-itsdangerous @ file:///home/conda/feedstock_root/build_artifacts/itsdangerous_1713372668944/work
-Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1715127149914/work
+importlib_metadata==8.4.0
+itsdangerous==2.2.0
+Jinja2==3.1.4
 jiter==0.7.1
 joblib==1.4.2
 kiwisolver==1.4.7
 llvmlite==0.43.0
-MarkupSafe @ file:///D:/bld/markupsafe_1724959577091/work
+MarkupSafe==3.0.2
 matplotlib==3.9.2
 multidict==6.1.0
 numba==0.60.0
@@ -57,8 +57,8 @@ tqdm==4.67.0
 typing_extensions==4.12.2
 tzdata==2024.2
 urllib3==2.2.3
-Werkzeug @ file:///home/conda/feedstock_root/build_artifacts/werkzeug_1724330738730/work
+Werkzeug==3.1.3
 wheel==0.44.0
 WTForms==3.1.2
 yarl==1.18.0
-zipp @ file:///home/conda/feedstock_root/build_artifacts/zipp_1724730934107/work
+zipp==3.20.1
