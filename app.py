@@ -1,5 +1,3 @@
-
-
 import pickle
 import numpy as np
 import shap
@@ -8,17 +6,9 @@ import matplotlib
 matplotlib.use('Agg')  # Use a non-GUI backend for Matplotlib
 import matplotlib.pyplot as plt
 
-import openai
+from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from markupsafe import Markup
 from dotenv import dotenv_values
-
-
-
-# OpenAI API Configuration
-secrer_keys = dotenv_values(".env")
-API_KEY = secrer_keys["API_KEY"]
-
-openai.api_key = API_KEY
 
 # Flask App Configuration
 app = Flask(__name__)
@@ -40,12 +30,20 @@ FEATURE_NAMES = [
     "resting_BP_mm_Hg"
 ]
 
-# Helper Function: Format OpenAI Reports for Markup
+# Hugging Face BioMistral-7B Configuration
+model_name = "BioMistral/BioMistral-7B"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+# Load model without GPU-specific optimizations
+model = AutoModelForCausalLM.from_pretrained(model_name,
+                                             device_map="auto",
+                                             low_cpu_mem_usage=True,
+                                             offload_folder="./offload")
+text_generator = pipeline("text-generation", model=model, tokenizer=tokenizer)
+
+# Helper Function: Format BioMistral Reports for Markup
 def format_report(report_text):
     report_text = report_text.replace("**", " ")  # Remove unnecessary bold markers
     report_text = report_text.replace("###", "<h2>")
-    # report_text = report_text.replace(" - ", "</li><li>")
-    report_text = report_text.replace("1. ", "</li></ol><ol><li>")
     return Markup(report_text)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -82,15 +80,15 @@ def result():
     plt.savefig(shap_plot_path, bbox_inches='tight')
     plt.close()
 
-    # Prepare SHAP values for OpenAI
+    # Prepare SHAP values for BioMistral
     shap_results = {
         FEATURE_NAMES[i]: shap_values.values[0][i]
         for i in range(len(FEATURE_NAMES))
     }
 
-    # Format prompt for OpenAI GPT-4
+    # Format prompt for BioMistral-7B
     shap_summary = "\n".join([f"{feature}: {value:.2f}" for feature, value in shap_results.items()])
-    openai_prompt = f"""
+    prompt = f"""
     A patient was evaluated for heart disease risk using a machine learning model. 
     The model provided the following SHAP analysis for feature importance:
 
@@ -98,37 +96,34 @@ def result():
 
     The prediction probability of heart disease is {prediction_proba:.2%}.
 
-    Please create a structured and well-formatted report in a professional tone suitable for a medical practitioner with the following sections:
+    Create a detailed, professional report in a structured format suitable for a cardiologist. Include the following sections:
 
     ### 1. Feature Analysis ###
-    - Provide a clinical interpretation of each feature, explaining its relevance to heart disease risk.
-    - Discuss the patient's specific data and the degree to which each feature influenced the prediction.
+    - For each feature, explain its clinical relevance in the context of heart disease.
+    - Interpret the patient's specific data and explain how each feature contributes to the prediction.
 
     ### 2. Summary of Results ###
-    - Concisely summarize the prediction outcomes in a numbered format.
-    - Highlight the key features driving the risk assessment and their clinical implications.
+    - Summarize the key takeaways in a numbered format.
+    - Include insights into the patient's risk profile and highlight the critical factors influencing the outcome.
 
     ### 3. Clinical Recommendations ###
-    - Provide evidence-based and practical recommendations tailored to the patient's risk factors.
-    - Organize recommendations into bullet points, focusing on actionable steps including lifestyle modifications, diagnostic tests, and treatment options.
-    - Use clear language emphasizing priorities for patient management and follow-up.
+    - Provide evidence-based recommendations tailored to the patient's risk factors.
+    - Break recommendations into:
+        - Lifestyle modifications
+        - Diagnostic tests
+        - Treatment options
+    - Use clear, action-oriented language suitable for medical follow-up.
 
-    Ensure the report maintains a professional format, appropriate spacing, and clear headings for easy readability by a medical professional.
+    ### 4. Supporting Insights ###
+    - Offer additional clinical insights or research references to contextualize the patient's risk assessment.
+    - Suggest potential next steps or areas for further evaluation.
     """
 
-    # Call GPT-4 for Report Generation
+
+    # Call BioMistral-7B for Report Generation
     try:
-        openai_response = openai.ChatCompletion.create(
-            model="gpt-4",  # Use GPT-4 for higher-quality responses
-            messages=[
-                {"role": "system",
-                 "content": "You are a medical assistant specializing in patient-friendly, expert-level medical reports. Provide clear explanations in bullet points with structured formatting."},
-                {"role": "user", "content": openai_prompt}
-            ],
-            max_tokens=800,
-            temperature=0.7
-        )
-        report = openai_response["choices"][0]["message"]["content"].strip()
+        response = text_generator(prompt, max_length=1200, num_return_sequences=1, temperature=0.6, top_p=0.9)
+        report = response[0]["generated_text"]
     except Exception as e:
         report = f"An error occurred while generating the report: {e}"
 
@@ -145,7 +140,6 @@ def result():
     <h3>Assistant's Explanation</h3>
     <p>{report}</p>
     """
-
 
     formatted_report = format_report(report)
 
